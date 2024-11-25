@@ -1,6 +1,12 @@
 import requests
 import uuid
+import os
+import json
+import time
+import fs
 
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def appconfig():
     # appConfig
@@ -363,35 +369,79 @@ def update_2():
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
 
+def renewID(radioID):
+    requests = requests.Session()
+    radio_id_input = radioID
+    uuid4 = str(uuid.uuid4())
+    auth_token = ""
+    seq = ""
 
-requests = requests.Session()
-radio_id_input = input("Enter Radio ID: ")
-uuid4 = str(uuid.uuid4())
-auth_token = ""
-seq = ""
-print("Configuring...")
-appconfig()
-print("Successfully Configured\n")
-print("Logging In...")
-auth_token = login()
-print("Logged In\n")
-print("Controlling Version...")
-versionControl()
-print("Version Controlled\n")
-print("getProperties")
-getProperties()
-print("update_1")
-seq = update_1()
-print("getCRM")
-getCRM()
-print("dbUpdate")
-dbUpdate()
-print("blocklist")
-blocklist()
-# I don't really think the oracle call is neccessary
-print("oracle")
-oracle()
-print("createAccount")
-createAccount()
-print("update_2")
-update_2()
+    print("Configuring...")
+    appconfig()
+    print("Successfully Configured\n")
+
+    print("Logging In...")
+    auth_token = login()
+    print("Logged In\n")
+
+    print("Controlling Version...")
+    versionControl()
+    print("Version Controlled\n")
+
+    print("Getting Properties...")
+    getProperties()
+    print("Properties Retrieved\n")
+
+    print("First Update...")
+    seq = update_1()
+    print("First Update Complete\n")
+
+    print("Getting CRM...")
+    getCRM()
+    print("CRM Retrieved\n")
+
+    print("Updating Database...")
+    dbUpdate()
+    print("Database Updated\n")
+
+    print("Checking Blocklist...")
+    blocklist()
+    print("Blocklist Checked\n")
+
+    # Probably not neccessary.
+    print("Calling Oracle Address...")
+    oracle()
+    print("Oracle Address Called\n")
+
+    print("Creating Account...")
+    createAccount()
+    print("Account Created\n")
+
+    print("Second Update...")
+    update_2()
+    print("Second Update Complete\n")
+
+def readCars():
+    with open("cars.json") as carList:
+    cars = json.load(carList)
+
+class Car:
+    def __init__(self, owner, make, model, id, lastRenewed, note) -> None:
+        self.owner = owner
+        self.make = make
+        self.model = model
+        self.id = id
+        self.lastRenewed = lastRenewed
+        self.note = note
+    
+    def renew(self):
+        clear()
+
+        renewID(self.id)
+
+        time.sleep(3)
+
+readCars()
+
+while True:
+    clear()
