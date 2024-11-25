@@ -3,7 +3,31 @@ import uuid
 import os
 import json
 import time
-import fs
+from datetime import datetime
+
+class Car:
+    def __init__(self, owner, make, model, id, lastRenewed, note) -> None:
+        self.owner = owner
+        self.make = make
+        self.model = model
+        self.id = id
+        self.lastRenewed = lastRenewed
+        self.note = note
+    
+    def prettyName(self):
+        date = "Never"
+
+        if self.lastRenewed:
+            date = datetime.fromisoformat(self.lastRenewed)
+            date = date.strftime("%c")
+
+        return f"{self.owner}'s {self.make} {self.model} (ID: {self.id}) (Last Renewed: {date})"
+    
+    def prettyNameShort(self):
+        return f"{self.owner}'s {self.make} {self.model}"
+    
+    def renew(self):
+        renewID(self.id)
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -369,7 +393,7 @@ def update_2():
     except requests.exceptions.RequestException:
         print('HTTP Request failed')
 
-def renewID(radioID):
+def renewID(radioID: str):
     requests = requests.Session()
     radio_id_input = radioID
     uuid4 = str(uuid.uuid4())
@@ -421,27 +445,82 @@ def renewID(radioID):
     update_2()
     print("Second Update Complete\n")
 
-def readCars():
+def readCars() -> list:
     with open("cars.json") as carList:
-    cars = json.load(carList)
+        cars = json.load(carList)
 
-class Car:
-    def __init__(self, owner, make, model, id, lastRenewed, note) -> None:
-        self.owner = owner
-        self.make = make
-        self.model = model
-        self.id = id
-        self.lastRenewed = lastRenewed
-        self.note = note
+        parsedCars = []
+
+        for car in cars:
+            carClass = Car(car["owner"], car["make"], car["model"], car["id"], car["lastRenewed"], car["note"], )
+            parsedCars.append(carClass)
+        
+        return parsedCars
     
-    def renew(self):
+def writeCars(carList) -> list:
+    jsonCars = []
+
+    for car in carList:
+        obj = {
+            "owner": car.owner,
+            "make": car.make,
+            "model": car.model,
+            "id": car.id,
+            "lastRenewed": car.lastRenewed,
+            "note": car.note
+        }
+
+        jsonCars.append(obj)
+    
+    with open("cars.json", "w") as existingList:
+        json.dump(jsonCars, existingList)
+
+def chooseCar(cars: list[Car]) -> list[Car]:
+    while True:
         clear()
 
-        renewID(self.id)
+        print("Choose a car to renew by number or use 'a' to renew all cars.\n\n")
 
-        time.sleep(3)
+        for num, car in enumerate(cars, 1):
+            print(f"{num}. {car.prettyName()}")
 
-readCars()
+        choice = input("\n> ")
 
-while True:
+        if choice == "a":
+            return cars
+
+        try:
+            choice = int(choice)
+
+            choice -= 1
+
+            if choice < 0 or choice > (len(cars) - 1):
+                raise ValueError
+            
+            return [cars[choice]]
+        except ValueError:
+            clear()
+
+            input("Invalid input. Try again.\n\nPress [ENTER] to continue.")
+
+            continue
+
+
+clear()
+
+cars = readCars()
+
+carChoices = chooseCar(cars)
+
+for num, car in enumerate(carChoices, 1):
     clear()
+
+    print(f"[{num}/{len(carChoices)}] Renewing {car.prettyNameShort()}")
+
+    car.renew()
+
+    (list(filter(lambda x: x.id == car.id, cars))[0]).lastRenewed = datetime.now().isoformat()
+
+writeCars(cars)
+
+print("\nRenewal Finished.")
