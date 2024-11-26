@@ -1,4 +1,4 @@
-import requests
+import requests as requestss
 import uuid
 import os
 import json
@@ -25,17 +25,11 @@ class Car:
     
     def prettyNameShort(self):
         return f"{self.owner}'s {self.make} {self.model}"
-    
-    def renew(self):
-        renewID(self.id)
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def appconfig():
-    # appConfig
-    # POST https://mcare.siriusxm.ca/authService/100000002/appconfig
-
     try:
         response = requests.post(
             url="https://mcare.siriusxm.ca/authService/100000002/appconfig",
@@ -52,18 +46,12 @@ def appconfig():
                 "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        #print('Response HTTP Response Body: {content}'.format(
-        #    content=response.content))
+        return ["OK", response.status_code]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def login():
-    # login
-    # POST https://mcare.siriusxm.ca/authService/100000002/login
-
     try:
         response = requests.post(
             url="https://mcare.siriusxm.ca/authService/100000002/login",
@@ -81,19 +69,12 @@ def login():
                 "X-Kony-App-Key": "85ee60a3c8f011baaeba01ff3a5ae2c9",
             },
         )
-        return response.json().get('claims_token').get('value')
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        #print('Response HTTP Response Body: {content}'.format(
-        #    content=response.content))
+        return [response.json().get('claims_token').get('value'), response.status_code]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def versionControl():
-    # VersionControl
-    # POST https://mcare.siriusxm.ca/services/DealerAppService7/VersionControl
-
     try:
         response = requests.post(
             url=
@@ -118,18 +99,12 @@ def versionControl():
                 "deviceType": "",
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        #print('Response HTTP Response Body: {content}'.format(
-        #    content=response.content))
+        return ["OK", response.status_code]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def getProperties():
-    # getProperties
-    # POST https://mcare.siriusxm.ca/services/DealerAppService7/getProperties
-
     try:
         response = requests.post(
             url=
@@ -146,18 +121,12 @@ def getProperties():
                 "X-Kony-Authorization": auth_token,
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        #print('Response HTTP Response Body: {content}'.format(
-        #    content=response.content))
+        return ["OK", response.status_code]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def update_1():
-    # 1-updateDeviceSATRefreshWithPriority
-    # POST https://mcare.siriusxm.ca/services/USUpdateDeviceSATRefresh/updateDeviceSATRefreshWithPriority
-
     try:
         response = requests.post(
             url=
@@ -183,19 +152,12 @@ def update_1():
                 "lat": "32.37436705",
             },
         )
-        return response.json().get('seqValue')
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return [response.json().get('seqValue'), response.status_code, response.content]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def getCRM():
-    # GetCRMAccountPlanInformation
-    # POST https://mcare.siriusxm.ca/services/DemoConsumptionRules/GetCRMAccountPlanInformation
-
     try:
         response = requests.post(
             url=
@@ -216,18 +178,11 @@ def getCRM():
                 "deviceId": radio_id_input,
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, response.content]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
-
+        return [requests.exceptions.RequestException, response.status_code]
 
 def dbUpdate():
-    # DBUpdateForGoogle
-    # POST https://mcare.siriusxm.ca/services/DBSuccessUpdate/DBUpdateForGoogle
-
     try:
         response = requests.post(
             url=
@@ -256,18 +211,12 @@ def dbUpdate():
                 "seqVal": seq,
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, response.content]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def blocklist():
-    # BlockListDevice
-    # POST https://mcare.siriusxm.ca/services/USBlockListDevice/BlockListDevice
-
     try:
         response = requests.post(
             url=
@@ -287,18 +236,12 @@ def blocklist():
                 "deviceId": uuid4,
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, response.content]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def oracle():
-    # Request (9)
-    # POST https://oemremarketing.custhelp.com/cgi-bin/oemremarketing.cfg/php/custom/src/oracle/program_status.php
-
     try:
         response = requests.post(
             url=
@@ -315,18 +258,12 @@ def oracle():
                 "Accept-Encoding": "br, gzip, deflate",
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, json.loads((response.content).decode('utf8').replace("'", '"'))]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def createAccount():
-    # CreateAccount
-    # POST https://mcare.siriusxm.ca/services/DealerAppService3/CreateAccount
-
     try:
         response = requests.post(
             url=
@@ -349,18 +286,12 @@ def createAccount():
                 "appVersion": "2.7.0",
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, json.loads((response.content).decode('utf8').replace("'", '"'))]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
+        return [requests.exceptions.RequestException, response.status_code]
 
 
 def update_2():
-    # 2-updateDeviceSATRefreshWithPriority
-    # POST https://mcare.siriusxm.ca/services/USUpdateDeviceRefreshForCC/updateDeviceSATRefreshWithPriority
-
     try:
         response = requests.post(
             url=
@@ -386,64 +317,9 @@ def update_2():
                 "provisionType": "activate",
             },
         )
-        #print('Response HTTP Status Code: {status_code}'.format(
-        #    status_code=response.status_code))
-        print('Response HTTP Response Body: {content}'.format(
-            content=response.content))
+        return ["OK", response.status_code, response.content]
     except requests.exceptions.RequestException:
-        print('HTTP Request failed')
-
-def renewID(radioID: str):
-    requests = requests.Session()
-    radio_id_input = radioID
-    uuid4 = str(uuid.uuid4())
-    auth_token = ""
-    seq = ""
-
-    print("Configuring...")
-    appconfig()
-    print("Successfully Configured\n")
-
-    print("Logging In...")
-    auth_token = login()
-    print("Logged In\n")
-
-    print("Controlling Version...")
-    versionControl()
-    print("Version Controlled\n")
-
-    print("Getting Properties...")
-    getProperties()
-    print("Properties Retrieved\n")
-
-    print("First Update...")
-    seq = update_1()
-    print("First Update Complete\n")
-
-    print("Getting CRM...")
-    getCRM()
-    print("CRM Retrieved\n")
-
-    print("Updating Database...")
-    dbUpdate()
-    print("Database Updated\n")
-
-    print("Checking Blocklist...")
-    blocklist()
-    print("Blocklist Checked\n")
-
-    # Probably not neccessary.
-    print("Calling Oracle Address...")
-    oracle()
-    print("Oracle Address Called\n")
-
-    print("Creating Account...")
-    createAccount()
-    print("Account Created\n")
-
-    print("Second Update...")
-    update_2()
-    print("Second Update Complete\n")
+        return [requests.exceptions.RequestException, response.status_code]
 
 def readCars() -> list:
     with open("cars.json") as carList:
@@ -517,9 +393,114 @@ for num, car in enumerate(carChoices, 1):
 
     print(f"[{num}/{len(carChoices)}] Renewing {car.prettyNameShort()}")
 
-    car.renew()
+    requests = requestss.Session()
+    radio_id_input = car.id
+    uuid4 = str(uuid.uuid4())
+    auth_token = ""
+    seq = ""
+    alreadyActive = False
 
-    (list(filter(lambda x: x.id == car.id, cars))[0]).lastRenewed = datetime.now().isoformat()
+    print("Configuring...")
+    result = appconfig()
+    if result[1] == 200:
+        print("Successfully Configured\n")
+    else:
+        print(f"!!Unsuccessfully Configured!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Logging In...")
+    result = login()
+    if result[1] == 200:
+        print("Logged In\n")
+        auth_token = result[0]
+    else:
+        print(f"!!Unsuccessfully Logged In!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Controlling Version...")
+    result = versionControl()
+    if result[1] == 200:
+        print("Version Controlled\n")
+    else:
+        print(f"!!Unsuccessfully Version Controlled!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Getting Properties...")
+    result = getProperties()
+    if result[1] == 200:
+        print("Properties Retrieved\n")
+    else:
+        print(f"!!Properties Retrieved Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+    
+    print("First Update...")
+    result = update_1()
+    if result[1] == 200:
+        print("First Update Success\n")
+        seq = result[0]
+    else:
+        print(f"!!First Update Unsuccessful!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Getting CRM...")
+    result = getCRM()
+    if result[1] == 200:
+        print("CRM Retrieved\n")
+    else:
+        print(f"!!CRM Retrieved Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Updating Database...")
+    result = dbUpdate()
+    if result[1] == 200:
+        print("Database Updated\n")
+    else:
+        print(f"!!Database Updated Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Checking Blocklist...")
+    result = blocklist()
+    if result[1] == 200:
+        print("Blocklist Checked\n")
+    else:
+        print(f"!!Blocklist Checked Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+
+    # Probably not neccessary.
+    print("Calling Oracle Address...")
+    result = oracle()
+    if result[1] == 200:
+        print("Oracle Address Called")
+        print(f"Dealer Code: {result[2]["dealerCode"]}, Dealer ID: {result[2]["dealerId"]}\n")
+    else:
+        print(f"!!Oracle Address Called Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Creating Account...")
+    result = createAccount()
+    if result[1] == 200:
+        if result[2]["resultData"][2]["message"] == "Device ID is already active":
+            print("\nThis car has already been registered and is still currently active. Please try again later.\n")
+            alreadyActive = True
+        else:
+            print("Account Created\n")
+    else:
+        print(f"!!Account Created Unsuccessfully!! Status Code: {result[1]}\n")
+        exit()
+
+    print("Second Update...")
+    result = update_2()
+    if result[1] == 200:
+        print("Second Update Complete\n")
+    else:
+        print(f"!!Second Update Unsuccessful!! Status Code: {result[1]}\n")
+        exit()
+
+    if not alreadyActive:
+        (list(filter(lambda x: x.id == car.id, cars))[0]).lastRenewed = datetime.now().isoformat()
+    
+    if num != len(carChoices):
+        input("Press [ENTER] to continue.")
 
 writeCars(cars)
 
