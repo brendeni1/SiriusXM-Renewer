@@ -2,7 +2,6 @@ import requests as requestss
 import uuid
 import os
 import json
-import time
 from datetime import datetime
 
 class Car:
