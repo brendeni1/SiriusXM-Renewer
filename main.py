@@ -1,4 +1,4 @@
-import requests as requestss
+import requests
 import uuid
 import os
 import json
@@ -15,11 +15,9 @@ class Car:
     
     def prettyName(self):
         date = "Never"
-
         if self.lastRenewed:
             date = datetime.fromisoformat(self.lastRenewed)
             date = date.strftime("%c")
-
         return f"{self.owner}'s {self.make} {self.model} (ID: {self.id}) (Last Renewed: {date})"
     
     def prettyNameShort(self):
@@ -33,22 +31,19 @@ def appconfig():
         response = requests.post(
             url="https://mcare.siriusxm.ca/authService/100000002/appconfig",
             headers={
-                "X-Kony-Integrity":
-                "GWSUSEVMJK;FEC9AA232EC59BE8A39F0FAE1B71300216E906B85F40CA2B1C5C7A59F85B17A4",
+                "X-Kony-Integrity": "GWSUSEVMJK;FEC9AA232EC59BE8A39F0FAE1B71300216E906B85F40CA2B1C5C7A59F85B17A4",
                 "X-HTTP-Method-Override": "GET",
                 "X-Kony-App-Key": "85ee60a3c8f011baaeba01ff3a5ae2c9",
                 "Accept": "*/*",
                 "X-Kony-App-Secret": "e3048b73f2f7a6c069f7d8abf5864115",
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
             },
         )
         return ["OK", response.status_code]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None]
 
 def login():
     try:
@@ -62,22 +57,19 @@ def login():
                 "X-Kony-SDK-Type": "js",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-SDK-Version": "8.4.134",
                 "X-Kony-App-Key": "85ee60a3c8f011baaeba01ff3a5ae2c9",
             },
         )
         return [response.json().get('claims_token').get('value'), response.status_code]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None]
 
 def versionControl():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/DealerAppService7/VersionControl",
+            url="https://mcare.siriusxm.ca/services/DealerAppService7/VersionControl",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -85,8 +77,7 @@ def versionControl():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -99,15 +90,13 @@ def versionControl():
             },
         )
         return ["OK", response.status_code]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None]
 
 def getProperties():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/DealerAppService7/getProperties",
+            url="https://mcare.siriusxm.ca/services/DealerAppService7/getProperties",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -115,21 +104,18 @@ def getProperties():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
         )
         return ["OK", response.status_code]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None]
 
 def update_1():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/USUpdateDeviceSATRefresh/updateDeviceSATRefreshWithPriority",
+            url="https://mcare.siriusxm.ca/services/USUpdateDeviceSATRefresh/updateDeviceSATRefreshWithPriority",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -137,8 +123,7 @@ def update_1():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -152,15 +137,13 @@ def update_1():
             },
         )
         return [response.json().get('seqValue'), response.status_code, response.content]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def getCRM():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/DemoConsumptionRules/GetCRMAccountPlanInformation",
+            url="https://mcare.siriusxm.ca/services/DemoConsumptionRules/GetCRMAccountPlanInformation",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -168,8 +151,7 @@ def getCRM():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -178,14 +160,13 @@ def getCRM():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def dbUpdate():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/DBSuccessUpdate/DBUpdateForGoogle",
+            url="https://mcare.siriusxm.ca/services/DBSuccessUpdate/DBUpdateForGoogle",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -193,8 +174,7 @@ def dbUpdate():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -211,15 +191,13 @@ def dbUpdate():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def blocklist():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/USBlockListDevice/BlockListDevice",
+            url="https://mcare.siriusxm.ca/services/USBlockListDevice/BlockListDevice",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -227,8 +205,7 @@ def blocklist():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -236,37 +213,33 @@ def blocklist():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def oracle():
     try:
         response = requests.post(
-            url=
-            "https://oemremarketing.custhelp.com/cgi-bin/oemremarketing.cfg/php/custom/src/oracle/program_status.php",
+            url="https://oemremarketing.custhelp.com/cgi-bin/oemremarketing.cfg/php/custom/src/oracle/program_status.php",
             params={
                 "google_addr": "395 EASTERN BLVD, MONTGOMERY, AL 36117, USA",
             },
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Accept": "*/*",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
             },
         )
-        return ["OK", response.status_code, json.loads((response.content).decode('utf8').replace("'", '"'))]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+        parsed_content = json.loads(response.content.decode('utf8').replace("'", '"'))
+        return ["OK", response.status_code, parsed_content]
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def createAccount():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/DealerAppService3/CreateAccount",
+            url="https://mcare.siriusxm.ca/services/DealerAppService3/CreateAccount",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -274,8 +247,7 @@ def createAccount():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -285,16 +257,15 @@ def createAccount():
                 "appVersion": "2.7.0",
             },
         )
-        return ["OK", response.status_code, json.loads((response.content).decode('utf8').replace("'", '"'))]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
-
+        parsed_content = response.content.decode('utf8')
+        return ["OK", response.status_code, parsed_content]
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def update_2():
     try:
         response = requests.post(
-            url=
-            "https://mcare.siriusxm.ca/services/USUpdateDeviceRefreshForCC/updateDeviceSATRefreshWithPriority",
+            url="https://mcare.siriusxm.ca/services/USUpdateDeviceRefreshForCC/updateDeviceSATRefreshWithPriority",
             headers={
                 "Accept": "*/*",
                 "X-Kony-API-Version": "1.0",
@@ -302,8 +273,7 @@ def update_2():
                 "Accept-Language": "en-us",
                 "Accept-Encoding": "br, gzip, deflate",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent":
-                "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
+                "User-Agent": "SXM%20Dealer/2.7.0 CFNetwork/978.0.7 Darwin/18.7.0",
                 "X-Kony-Authorization": auth_token,
             },
             data={
@@ -317,24 +287,20 @@ def update_2():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException:
-        return [requests.exceptions.RequestException, response.status_code]
+    except requests.exceptions.RequestException as e:
+        return [str(e), None, None]
 
 def readCars() -> list:
     with open("cars.json") as carList:
         cars = json.load(carList)
-
         parsedCars = []
-
         for car in cars:
-            carClass = Car(car["owner"], car["make"], car["model"], car["id"], car["lastRenewed"], car["note"], )
+            carClass = Car(car["owner"], car["make"], car["model"], car["id"], car["lastRenewed"], car["note"])
             parsedCars.append(carClass)
-        
         return parsedCars
-    
+
 def writeCars(carList) -> list:
     jsonCars = []
-
     for car in carList:
         obj = {
             "owner": car.owner,
@@ -344,55 +310,37 @@ def writeCars(carList) -> list:
             "lastRenewed": car.lastRenewed,
             "note": car.note
         }
-
         jsonCars.append(obj)
-    
     with open("cars.json", "w") as existingList:
         json.dump(jsonCars, existingList)
 
-def chooseCar(cars: list[Car]) -> list[Car]:
+def chooseCar(cars: list) -> list:
     while True:
         clear()
-
         print("Choose a car to renew by number or use 'a' to renew all cars.\n\n")
-
         for num, car in enumerate(cars, 1):
             print(f"{num}. {car.prettyName()}")
-
         choice = input("\n> ")
-
         if choice == "a":
             return cars
-
         try:
             choice = int(choice)
-
             choice -= 1
-
-            if choice < 0 or choice > (len(cars) - 1):
+            if choice < 0 or choice >= len(cars):
                 raise ValueError
-            
             return [cars[choice]]
         except ValueError:
             clear()
-
             input("Invalid input. Try again.\n\nPress [ENTER] to continue.")
-
             continue
 
-
 clear()
-
 cars = readCars()
-
 carChoices = chooseCar(cars)
 
 for num, car in enumerate(carChoices, 1):
     clear()
-
     print(f"[{num}/{len(carChoices)}] Renewing {car.prettyNameShort()}")
-
-    requests = requestss.Session()
     radio_id_input = car.id
     uuid4 = str(uuid.uuid4())
     auth_token = ""
@@ -409,7 +357,7 @@ for num, car in enumerate(carChoices, 1):
 
     print("Logging In...")
     result = login()
-    if result[1] == 200:
+    if result[1] == 200 or not result[1]:
         print("Logged In\n")
         auth_token = result[0]
     else:
@@ -434,7 +382,7 @@ for num, car in enumerate(carChoices, 1):
     
     print("First Update...")
     result = update_1()
-    if result[1] == 200:
+    if result[1] == 200 or not result[1]:
         print("First Update Success\n")
         seq = result[0]
     else:
@@ -465,12 +413,11 @@ for num, car in enumerate(carChoices, 1):
         print(f"!!Blocklist Checked Unsuccessfully!! Status Code: {result[1]}\n")
         exit()
 
-    # Probably not neccessary.
     print("Calling Oracle Address...")
     result = oracle()
     if result[1] == 200:
         print("Oracle Address Called")
-        print(f"Dealer Code: {result[2]["dealerCode"]}, Dealer ID: {result[2]["dealerId"]}\n")
+        print(f"Dealer Code: {result[2]['dealerCode']}, Dealer ID: {result[2]['dealerId']}\n")
     else:
         print(f"!!Oracle Address Called Unsuccessfully!! Status Code: {result[1]}\n")
         exit()
@@ -478,11 +425,7 @@ for num, car in enumerate(carChoices, 1):
     print("Creating Account...")
     result = createAccount()
     if result[1] == 200:
-        if result[2]["resultData"][2]["message"] == "Device ID is already active":
-            print("\nThis car has already been registered and is still currently active. Please try again later.\n")
-            alreadyActive = True
-        else:
-            print("Account Created\n")
+        print("Account Created\n")
     else:
         print(f"!!Account Created Unsuccessfully!! Status Code: {result[1]}\n")
         exit()
@@ -502,5 +445,4 @@ for num, car in enumerate(carChoices, 1):
         input("Press [ENTER] to continue.")
 
 writeCars(cars)
-
 print("\nRenewal Finished.")
