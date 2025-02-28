@@ -1,32 +1,7 @@
 import requests
 import uuid
-import os
-import json
-from datetime import datetime
 
-class Car:
-    def __init__(self, owner, make, model, id, lastRenewed, note) -> None:
-        self.owner = owner
-        self.make = make
-        self.model = model
-        self.id = id
-        self.lastRenewed = lastRenewed
-        self.note = note
 
-    def prettyName(self):
-        date = "Never"
-        if self.lastRenewed:
-            date = datetime.fromisoformat(self.lastRenewed)
-            date = date.strftime("%c")
-        return f"{self.owner}'s {self.make} {self.model} (ID: {self.id}) (Last Renewed: {date})"
-
-    def prettyNameShort(self):
-        return f"{self.owner}'s {self.make} {self.model}"
-
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-# --- Updated API Functions from new.py ---
 def appconfig():
     # appConfig
     # POST https://dealerapp.siriusxm.com/authService/100000002/appconfig
@@ -46,9 +21,13 @@ def appconfig():
                 "User-Agent": "SiriusXM%20Dealer/3.1.0 CFNetwork/1568.200.51 Darwin/24.1.0",
             },
         )
-        return [None, 200]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        #print('Response HTTP Response Body: {content}'.format(
+        #    content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def login():
     # login
@@ -70,9 +49,14 @@ def login():
                 "X-Voltmx-App-Key": "67cfe0220c41a54cb4e768723ad56b41",
             },
         )
-        return [response.json().get('claims_token').get('value'), response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        return response.json().get('claims_token').get('value')
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        #print('Response HTTP Response Body: {content}'.format(
+        #    content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def versionControl():
     # VersionControl
@@ -102,9 +86,13 @@ def versionControl():
                 "deviceType": "",
             },
         )
-        return [None, response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        #print('Response HTTP Response Body: {content}'.format(
+        #    content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def getProperties():
     # getProperties
@@ -126,9 +114,13 @@ def getProperties():
                 "X-Voltmx-Authorization": auth_token,
             },
         )
-        return [None, response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        #print('Response HTTP Response Body: {content}'.format(
+        #    content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def update_1():
     # 1-updateDeviceSATRefreshWithPriority
@@ -159,9 +151,14 @@ def update_1():
                 "lat": "32.37436705",
             },
         )
-        return [response.json().get('seqValue'), response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        return response.json().get('seqValue')
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def getCRM():
     # GetCRMAccountPlanInformation
@@ -187,9 +184,13 @@ def getCRM():
                 "deviceId": radio_id_input,
             },
         )
-        return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def dbUpdate():
     # DBUpdateForGoogle
@@ -223,9 +224,13 @@ def dbUpdate():
                 "seqVal": seq,
             },
         )
-        return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def blocklist():
     # BlockListDevice
@@ -250,9 +255,13 @@ def blocklist():
                 "deviceId": uuid4,
             },
         )
-        return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def oracle():
     # Request (9)
@@ -276,10 +285,11 @@ def oracle():
         )
         #print('Response HTTP Status Code: {status_code}'.format(
         #    status_code=response.status_code))
-        parsed_content = json.loads(response.content.decode('utf8').replace("'", '"'))
-        return ["OK", response.status_code, parsed_content]
-    except requests.exceptions.RequestException as e:
-        return [str(e), e.response.status_code, None]
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def createAccount():
     # CreateAccount
@@ -307,9 +317,13 @@ def createAccount():
                 "appVersion": "3.1.0",
             },
         )
-        return ["OK", response.status_code, response.json()]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
+
 
 def update_2():
     # 2-updateDeviceSATRefreshWithPriority
@@ -340,173 +354,40 @@ def update_2():
                 "provisionType": "activate",
             },
         )
-        return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+        #print('Response HTTP Status Code: {status_code}'.format(
+        #    status_code=response.status_code))
+        print('Response HTTP Response Body: {content}'.format(
+            content=response.content))
+    except requests.exceptions.RequestException:
+        print('HTTP Request failed')
 
-# --- End Updated Functions ---
-
-def readCars() -> list:
-    with open("cars.json") as carList:
-        cars = json.load(carList)
-        parsedCars = []
-        for car in cars:
-            carClass = Car(car["owner"], car["make"], car["model"], car["id"], car["lastRenewed"], car["note"])
-            parsedCars.append(carClass)
-        return parsedCars
-
-def writeCars(carList) -> None:
-    jsonCars = []
-    for car in carList:
-        obj = {
-            "owner": car.owner,
-            "make": car.make,
-            "model": car.model,
-            "id": car.id,
-            "lastRenewed": car.lastRenewed,
-            "note": car.note
-        }
-        jsonCars.append(obj)
-    with open("cars.json", "w") as existingList:
-        json.dump(jsonCars, existingList)
-
-def chooseCar(cars: list) -> list:
-    while True:
-        clear()
-        print("Choose a car to renew by number or use 'a' to renew all cars.\n\n")
-        for num, car in enumerate(cars, 1):
-            print(f"{num}. {car.prettyName()}")
-        choice = input("\n> ")
-        if choice == "a":
-            return cars
-        try:
-            choice = int(choice)
-            choice -= 1
-            if choice < 0 or choice >= len(cars):
-                raise ValueError
-            return [cars[choice]]
-        except ValueError:
-            clear()
-            input("Invalid input. Try again.\n\nPress [ENTER] to continue.")
-            continue
-
-# --- Main Execution ---
-clear()
-cars = readCars()
-carChoices = chooseCar(cars)
 
 requests = requests.Session()
-
-for num, car in enumerate(carChoices, 1):
-    clear()
-    print(f"[{num}/{len(carChoices)}] Renewing {car.prettyNameShort()}")
-    radio_id_input = (car.id).upper()
-    uuid4 = str(uuid.uuid4())
-    auth_token = ""
-    seq = ""
-    alreadyActive = False
-
-    print("Configuring...")
-    result = appconfig()
-    if result[1] == 200:
-        print("Successfully Configured\n")
-    else:
-        print(f"!!Unsuccessfully Configured!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Logging In...")
-    result = login()
-    if result[1] == 200 or not result[1]:
-        print("Logged In\n")
-        auth_token = result[0]
-    else:
-        print(f"!!Unsuccessfully Logged In!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Controlling Version...")
-    result = versionControl()
-    if result[1] == 200:
-        print("Version Controlled\n")
-    else:
-        print(f"!!Unsuccessfully Version Controlled!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Getting Properties...")
-    result = getProperties()
-    if result[1] == 200:
-        print("Properties Retrieved\n")
-    else:
-        print(f"!!Properties Retrieved Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-    
-    print("First Update...")
-    result = update_1()
-    if result[1] == 200 or not result[1]:
-        print("First Update Success\n")
-        seq = result[0]
-    else:
-        print(f"!!First Update Unsuccessful!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Getting CRM...")
-    result = getCRM()
-    if result[1] == 200:
-        print("CRM Retrieved\n")
-    else:
-        print(f"!!CRM Retrieved Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Updating Database...")
-    result = dbUpdate()
-    if result[1] == 200:
-        print("Database Updated\n")
-    else:
-        print(f"!!Database Updated Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Checking Blocklist...")
-    result = blocklist()
-    if result[1] == 200:
-        print("Blocklist Checked\n")
-    else:
-        print(f"!!Blocklist Checked Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Calling Oracle Address...")
-    result = oracle()
-    if result[1] == 200:
-        print("Oracle Address Called")
-        print(f"Dealer Code: {result[2].get('dealerCode')}, Dealer ID: {result[2].get('dealerId')}\n")
-    else:
-        print(f"!!Oracle Address Called Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Creating Account...")
-    result = createAccount()
-    if result[1] == 200:
-        if len(result[2]["resultData"]) > 2:
-            if result[2]["resultData"][2]["message"]  == "Device ID is already active":
-                print("\nThis car has already been registered and is still currently active. Please try again later.\n")
-                alreadyActive = True
-        else:
-            print("Account Created\n")
-    else:
-        print(f"!!Account Created Unsuccessfully!! Status Code: {result[1]}\n")
-        exit()
-
-    print("Second Update...")
-    result = update_2()
-    if result[1] == 200:
-        print("Second Update Complete\n")
-    else:
-        print(f"!!Second Update Unsuccessful!! Status Code: {result[1]}\n")
-        exit()
-
-    if not alreadyActive:
-        (list(filter(lambda x: x.id == car.id, cars))[0]).lastRenewed = datetime.now().isoformat()
-    
-    if num != len(carChoices):
-        input("Press [ENTER] to continue.")
-
-writeCars(cars)
-print("\nRenewal Finished.")
+radio_id_input = input("Enter Radio ID: ")
+radio_id_input = radio_id_input.upper()
+uuid4 = str(uuid.uuid4())
+auth_token = ""
+seq = ""
+print("appconfig")
+appconfig()
+print("login")
+auth_token = login()
+print("versionControl")
+versionControl()
+print("getProperties")
+getProperties()
+print("update_1")
+seq = update_1()
+print("getCRM")
+getCRM()
+print("dbUpdate")
+dbUpdate()
+print("blocklist")
+blocklist()
+# I don't really think the oracle call is neccessary
+print("oracle")
+oracle()
+print("createAccount")
+createAccount()
+print("update_2")
+update_2()
