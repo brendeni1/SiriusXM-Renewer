@@ -1,4 +1,4 @@
-import requests
+import requests as requestss
 import uuid
 import os
 import json
@@ -47,8 +47,8 @@ def appconfig():
             },
         )
         return [None, 200]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def login():
     # login
@@ -71,8 +71,8 @@ def login():
             },
         )
         return [response.json().get('claims_token').get('value'), response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def versionControl():
     # VersionControl
@@ -103,8 +103,8 @@ def versionControl():
             },
         )
         return [None, response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def getProperties():
     # getProperties
@@ -127,8 +127,8 @@ def getProperties():
             },
         )
         return [None, response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def update_1():
     # 1-updateDeviceSATRefreshWithPriority
@@ -160,8 +160,8 @@ def update_1():
             },
         )
         return [response.json().get('seqValue'), response.status_code]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def getCRM():
     # GetCRMAccountPlanInformation
@@ -188,8 +188,8 @@ def getCRM():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def dbUpdate():
     # DBUpdateForGoogle
@@ -224,8 +224,8 @@ def dbUpdate():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def blocklist():
     # BlockListDevice
@@ -251,8 +251,8 @@ def blocklist():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def oracle():
     # Request (9)
@@ -278,8 +278,8 @@ def oracle():
         #    status_code=response.status_code))
         parsed_content = json.loads(response.content.decode('utf8').replace("'", '"'))
         return ["OK", response.status_code, parsed_content]
-    except requests.exceptions.RequestException as e:
-        return [str(e), e.response.status_code, None]
+    except requestss.exceptions.RequestException as e:
+        return [str(e), e.response.status_code if e.response else "400", None]
 
 def createAccount():
     # CreateAccount
@@ -308,8 +308,8 @@ def createAccount():
             },
         )
         return ["OK", response.status_code, response.json()]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 def update_2():
     # 2-updateDeviceSATRefreshWithPriority
@@ -341,8 +341,8 @@ def update_2():
             },
         )
         return ["OK", response.status_code, response.content]
-    except requests.exceptions.RequestException as e:
-        return [None, e.response.status_code]
+    except requestss.exceptions.RequestException as e:
+        return [None, e.response.status_code if e.response else "400"]
 
 # --- End Updated Functions ---
 
@@ -395,7 +395,7 @@ clear()
 cars = readCars()
 carChoices = chooseCar(cars)
 
-requests = requests.Session()
+requests = requestss.Session()
 
 for num, car in enumerate(carChoices, 1):
     clear()
@@ -484,7 +484,7 @@ for num, car in enumerate(carChoices, 1):
     print("Creating Account...")
     result = createAccount()
     if result[1] == 200:
-        if len(result[2]["resultData"]) > 2:
+        if result[2]["resultData"][0]["resultCode"] == "FAILURE":
             if result[2]["resultData"][2]["message"]  == "Device ID is already active":
                 print("\nThis car has already been registered and is still currently active. Please try again later.\n")
                 alreadyActive = True
