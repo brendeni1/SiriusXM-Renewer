@@ -1,0 +1,13 @@
+[
+  {
+    "owner": "NAME",
+    "make": "MAKE",
+    "model": "MODEL",
+    "id": "RADIO_ID_FROM_CHANNEL_0",
+    "lastRenewed": "",
+    "note": "REMOVE ALL THIS DATA BEFORE USING SCRIPT!! MAKE SURE TO RENAME THIS FILE TO 'cars.json'."
+  },
+  {
+    ...
+  }
+]
