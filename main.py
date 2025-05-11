@@ -488,6 +488,9 @@ for num, car in enumerate(carChoices, 1):
             if result[2]["resultData"][2]["message"]  == "Device ID is already active":
                 print("\nThis car has already been registered and is still currently active. Please try again later.\n")
                 alreadyActive = True
+            else:
+                print(f"\nError: {result[2]["resultData"][2]["message"]}\n")
+                alreadyActive = True
         else:
             print("Account Created\n")
     else:
