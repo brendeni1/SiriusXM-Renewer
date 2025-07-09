@@ -6,7 +6,7 @@ click==8.2.0
 colorama==0.4.6
 dnspython==2.7.0
 eventlet==0.39.1
-Flask==3.1.0
+Flask==3.1.1
 Flask-SocketIO==5.5.1
 greenlet==3.2.2
 h11==0.16.0
